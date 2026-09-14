@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ro'yxatdan o'tganlar — AI Seminar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0B09; --surface:#141610; --surface-2:#1B1E15;
+    --accent:#FF7A29; --text:#F3F5EC; --text-muted:#9CA3AF;
+    --border:rgb(38,41,32);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:'Manrope',ui-sans-serif,system-ui,sans-serif;
+    padding:32px 20px 60px;
+  }
+  .wrap{max-width:800px;margin:0 auto;}
+  h1{font-size:24px;font-weight:800;margin:0 0 4px;}
+  .sub{color:var(--text-muted);font-size:14px;margin-bottom:24px;}
+  .count{color:var(--accent);font-weight:700;}
+  table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  th,td{padding:10px 14px;text-align:left;font-size:14px;border-bottom:1px solid var(--border);}
+  th{background:var(--surface-2);color:var(--text-muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em;}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-2);}
+  .empty{color:var(--text-muted);text-align:center;padding:40px 0;}
+  .refresh{
+    margin-top:20px;font-size:12.5px;color:var(--text-muted);
+    display:flex;align-items:center;gap:8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ro'yxatdan o'tganlar</h1>
+  <div class="sub"><span class="count" id="count">—</span> kishi ro'yxatdan o'tdi</div>
+  <div id="table-holder">
+    <div class="empty">Yuklanmoqda...</div>
+  </div>
+  <div class="refresh">Har 30 soniyada avtomatik yangilanadi · so'nggi yangilanish: <span id="updated">—</span></div>
+</div>
+
+<script>
+  async function load(){
+    try{
+      const res = await fetch('data/registrations.csv?t=' + Date.now());
+      if (!res.ok) throw new Error('no data');
+      const text = await res.text();
+      const lines = text.trim().split('\n').filter(Boolean);
+      const rows = lines.slice(1).map(function(line){
+        var m = line.match(/^([^,]*),"((?:[^"]|"")*)","((?:[^"]|"")*)"$/);
+        if (!m) return null;
+        return { ts: m[1], name: m[2].replace(/""/g,'"'), phone: m[3].replace(/""/g,'"') };
+      }).filter(Boolean).reverse();
+
+      document.getElementById('count').textContent = rows.length;
+      var holder = document.getElementById('table-holder');
+      if (!rows.length) {
+        holder.innerHTML = '<div class="empty">Hali hech kim ro\'yxatdan o\'tmagan.</div>';
+      } else {
+        var html = '<table><thead><tr><th>Sana</th><th>Ism</th><th>Telefon</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          var d = new Date(r.ts);
+          var dateStr = isNaN(d) ? r.ts : d.toLocaleString('uz-UZ', { dateStyle:'short', timeStyle:'short' });
+          html += '<tr><td>' + dateStr + '</td><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.phone) + '</td></tr>';
+        });
+        html += '</tbody></table>';
+        holder.innerHTML = html;
+      }
+      document.getElementById('updated').textContent = new Date().toLocaleTimeString('uz-UZ');
+    } catch(e) {
+      document.getElementById('table-holder').innerHTML = '<div class="empty">Hali hech kim ro\'yxatdan o\'tmagan.</div>';
+    }
+  }
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  load();
+  setInterval(load, 30000);
+</script>
+</body>
+</html>
