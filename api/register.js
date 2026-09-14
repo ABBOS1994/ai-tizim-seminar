@@ -15,38 +15,12 @@ export default async function handler(req, res) {
     return;
   }
 
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-
-  if (!token || !chatId) {
-    res.status(500).json({ ok: false, error: 'server_not_configured' });
-    return;
-  }
-
   const cleanName = name.trim();
   const cleanPhone = phone.replace(/[\s()-]/g, '');
-  const text = `Yangi ro'yxatdan o'tish — AI Seminar\nIsm: ${cleanName}\nTelefon: ${cleanPhone}`;
-
-  let telegramOk = false;
-  try {
-    const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text }),
-    });
-    const tgData = await tgRes.json();
-    telegramOk = !!tgData.ok;
-  } catch (err) {
-    telegramOk = false;
-  }
 
   await appendToSheet(cleanName, cleanPhone).catch(() => {});
   await appendToGoogleSheet(cleanName, cleanPhone).catch(() => {});
 
-  if (!telegramOk) {
-    res.status(502).json({ ok: false, error: 'telegram_failed' });
-    return;
-  }
   res.status(200).json({ ok: true });
 }
 
