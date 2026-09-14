@@ -48,7 +48,7 @@
 <script>
   async function load(){
     try{
-      const res = await fetch('data/registrations.csv?t=' + Date.now());
+      const res = await fetch('https://raw.githubusercontent.com/YunusovSiroj/ai-tizim-seminar/main/data/registrations.csv?t=' + Date.now());
       if (!res.ok) throw new Error('no data');
       const text = await res.text();
       const lines = text.trim().split('\n').filter(Boolean);
