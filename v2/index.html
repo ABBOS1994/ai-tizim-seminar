@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI orqali biznesingizni boshqarishni o'rganing</title>
+<meta name="description" content="Biznesingizga mos AI tizimini 0 dan qanday yaratishni bilib oling. 24-sentabr, Medion, 14:00-17:00.">
+<meta property="og:title" content="AI orqali biznesingizni boshqarishni o'rganing">
+<meta property="og:description" content="4 soat ichida o'zingizga AI agentlar yasab, biznesingizni avtomatlashtiring.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://yunusovsiroj.github.io/ai-tizim-seminar/v2/img/spiker.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07070A;
+    --surface:#0F0F14;
+    --surface-2:#16161D;
+    --border:rgba(255,255,255,0.08);
+    --border-2:rgba(255,255,255,0.14);
+    --text:#F5F5F7;
+    --text-muted:#8B8B96;
+    --accent1:#8B5CF6;
+    --accent2:#22D3EE;
+    --on-accent:#07070A;
+    --danger:#F87171;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:'Inter', ui-sans-serif, system-ui, sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Space Grotesk', ui-sans-serif, sans-serif;line-height:1.1;letter-spacing:-0.02em;margin:0;text-wrap:balance;}
+  p{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  section{padding-block:112px;position:relative;}
+  @media (max-width:700px){ section{padding-block:64px;} }
+  .wrap{max-width:1160px;margin:0 auto;padding-inline:24px;}
+
+  .grad-text{
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:600;letter-spacing:0.02em;
+    color:var(--accent2);
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent2);}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb, var(--bg) 78%, transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:18px;}
+  .brand{font-family:'Space Grotesk';font-weight:600;font-size:17px;}
+  .nav-cta{background:var(--text);color:var(--on-accent);font-weight:600;font-size:13.5px;padding:10px 20px;border-radius:8px;transition:opacity .15s;}
+  .nav-cta:hover{opacity:.85;}
+
+  /* hero */
+  .hero{padding-block:88px 0;overflow:hidden;}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  @media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:48px;}}
+
+  .hero-copy h1{font-size:clamp(32px,4.6vw,54px);font-weight:600;margin-top:20px;max-width:14ch;}
+  .hero-copy .lede{margin:22px 0 0;max-width:48ch;color:var(--text-muted);font-size:17px;}
+  .hero-actions{display:flex;align-items:center;gap:18px;margin-top:36px;flex-wrap:wrap;}
+  .cta{
+    display:inline-flex;align-items:center;gap:10px;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    color:#fff;font-weight:600;font-size:15.5px;padding:15px 28px;border-radius:10px;
+    transition:transform .15s, box-shadow .2s;box-shadow:0 0 0 rgba(139,92,246,0);
+  }
+  .cta:hover{box-shadow:0 8px 30px -6px rgba(139,92,246,0.55);}
+  .cta:active{transform:scale(0.98);}
+  .cta-ghost{font-size:14.5px;color:var(--text-muted);border-bottom:1px solid var(--border-2);padding-bottom:2px;transition:color .15s,border-color .15s;}
+  .cta-ghost:hover{color:var(--text);border-color:var(--text);}
+
+  .countdown{margin-top:44px;display:flex;gap:12px;}
+  .cd-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-width:64px;}
+  .cd-cell .num{font-family:'Space Grotesk';font-size:22px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;display:block;}
+  .cd-cell .lbl{font-size:10.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;}
+
+  .meta-strip{margin-top:44px;display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);padding-top:20px;max-width:520px;}
+  .meta-item{padding:0 22px 0 0;margin-right:22px;border-right:1px solid var(--border);}
+  .meta-item:last-child{border-right:none;margin-right:0;padding-right:0;}
+  .meta-item .k{font-size:11.5px;color:var(--text-muted);}
+  .meta-item .v{font-weight:600;margin-top:4px;font-size:14px;}
+
+  /* hero visual: 3D canvas + photo */
+  .hero-visual{position:relative;aspect-ratio:3/4;max-width:420px;margin-inline:auto;}
+  .hero-visual canvas{position:absolute;inset:-18% -30%;width:156%;height:136%;display:block;}
+  .hero-visual .photo{
+    position:absolute;inset:0;z-index:2;
+    -webkit-mask-image:linear-gradient(to bottom, black 82%, transparent 100%);
+    mask-image:linear-gradient(to bottom, black 82%, transparent 100%);
+  }
+  .hero-visual .photo img{width:100%;height:100%;object-fit:contain;object-position:center bottom;display:block;}
+  .hero-visual .ring{
+    position:absolute;left:50%;top:14%;translate:-50% -50%;
+    width:62%;aspect-ratio:1;border-radius:50%;z-index:0;
+    background:radial-gradient(circle, rgba(139,92,246,0.28), transparent 70%);
+    filter:blur(30px);
+  }
+
+  /* section head */
+  .section-head{max-width:60ch;}
+  .section-head h2{font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:12px;}
+  .section-head p{margin-top:14px;color:var(--text-muted);font-size:16.5px;}
+  .section-head.center{max-width:56ch;margin-inline:auto;text-align:center;}
+
+  /* audience */
+  .audience{margin-top:44px;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  @media (max-width:820px){.audience{grid-template-columns:repeat(2,1fr);}}
+  .a-card{background:var(--surface);padding:28px 18px;text-align:center;}
+  .a-card .t{font-weight:600;font-size:14px;}
+
+  /* transform */
+  .transform{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+  @media (max-width:820px){.transform{grid-template-columns:1fr;}}
+  .t-card{background:var(--surface);padding:30px 26px;}
+  .t-card .n{font-family:'Space Grotesk';color:var(--accent2);font-weight:600;font-size:13px;}
+  .t-card h3{margin-top:16px;font-size:18px;font-weight:600;}
+  .t-card p{margin-top:10px;color:var(--text-muted);font-size:14.5px;}
+
+  /* program */
+  .program{margin-top:44px;}
+  .p-row{display:grid;grid-template-columns:64px 1fr;gap:20px;padding-block:24px;border-top:1px solid var(--border);}
+  .program .p-row:last-child{border-bottom:1px solid var(--border);}
+  .p-num{font-family:'Space Grotesk';color:var(--accent1);font-weight:600;font-size:15px;}
+  .p-row h3{font-size:17px;font-weight:600;}
+  .p-row p{margin-top:6px;color:var(--text-muted);font-size:14.5px;max-width:62ch;}
+
+  /* deliverables */
+  .deliv{margin-top:44px;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+  @media (max-width:700px){.deliv{grid-template-columns:1fr;}}
+  .d-item{display:flex;gap:12px;align-items:center;background:var(--surface);padding:18px 20px;}
+  .d-item .check{flex:none;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;background:linear-gradient(135deg,var(--accent1),var(--accent2));}
+  .d-item span.txt{font-size:14.5px;}
+
+  /* FAQ */
+  .faq{margin-top:44px;max-width:760px;margin-inline:auto;}
+  details{border-top:1px solid var(--border);padding-block:18px;}
+  .faq details:last-child{border-bottom:1px solid var(--border);}
+  summary{cursor:pointer;font-weight:600;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  summary::-webkit-details-marker{display:none;}
+  summary .plus{flex:none;color:var(--accent2);font-size:20px;transition:transform 150ms;}
+  details[open] summary .plus{transform:rotate(45deg);}
+  details p{margin-top:12px;color:var(--text-muted);font-size:14.5px;}
+
+  /* event card */
+  .event-card{margin-top:44px;border:1px solid var(--border);border-radius:20px;background:var(--surface);display:grid;grid-template-columns:repeat(4,1fr);}
+  @media (max-width:760px){.event-card{grid-template-columns:repeat(2,1fr);}}
+  .e-cell{padding:24px 22px;border-right:1px solid var(--border);}
+  .e-cell:last-child{border-right:none;}
+  @media (max-width:760px){.e-cell:nth-child(2n){border-right:none;}.e-cell{border-bottom:1px solid var(--border);}}
+  .e-cell .k{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);}
+  .e-cell .v{margin-top:8px;font-size:17px;font-weight:600;}
+  .fine{margin-top:20px;color:var(--text-muted);font-size:13px;text-align:center;}
+
+  /* final cta */
+  .final{position:relative;text-align:center;border:1px solid var(--border-2);border-radius:24px;background:var(--surface);padding:72px 32px;overflow:hidden;}
+  .final::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.16), transparent 60%);pointer-events:none;}
+  .final h2{position:relative;font-size:clamp(24px,3.4vw,36px);font-weight:600;}
+  .final p{position:relative;margin-top:14px;color:var(--text-muted);}
+  .final .cta{position:relative;display:inline-flex;margin-top:30px;}
+
+  footer{border-top:1px solid var(--border);padding-block:32px;text-align:center;}
+  footer p{color:var(--text-muted);font-size:12.5px;}
+  footer p+p{margin-top:6px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">AI Seminar</div>
+    <a class="nav-cta" href="#event">Yozilish</a>
+  </div>
+</nav>
+
+<section class="hero wrap">
+  <div class="hero-copy">
+    <span class="eyebrow">Amaliy seminar · 24-sentabr</span>
+    <h1>AI orqali <span class="grad-text">biznesingizni</span> boshqarishni o'rganing</h1>
+    <p class="lede">Biznesingizga mos AI tizimini 0 dan qanday yaratishni bilib oling. Sun'iy intellektning biznesingizga foydasi, uni integratsiya qilish va imkoniyatlaridan samarali foydalanishni bilib oling.</p>
+
+    <div class="hero-actions">
+      <a class="cta" href="#event">Seminarga yozilish →</a>
+      <a class="cta-ghost" href="#dastur">Dasturni ko'rish</a>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-cell"><span class="num" id="cd-days">00</span><span class="lbl">kun</span></div>
+      <div class="cd-cell"><span class="num" id="cd-hours">00</span><span class="lbl">soat</span></div>
+      <div class="cd-cell"><span class="num" id="cd-mins">00</span><span class="lbl">daqiqa</span></div>
+      <div class="cd-cell"><span class="num" id="cd-secs">00</span><span class="lbl">soniya</span></div>
+    </div>
+
+    <div class="meta-strip">
+      <div class="meta-item"><div class="k">Sana</div><div class="v">24-sentabr, Payshanba</div></div>
+      <div class="meta-item"><div class="k">Joy</div><div class="v">Medion</div></div>
+      <div class="meta-item"><div class="k">Vaqt</div><div class="v">14:00–17:00</div></div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="ring"></div>
+    <canvas id="net3d"></canvas>
+    <div class="photo"><img src="img/spiker.webp" alt="Seminar spikeri"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Kimlar uchun</span>
+      <h2>Biznesida qaror qabul qiluvchi har bir kishi uchun</h2>
+      <p>Agar shu ro'yxatda o'zingizni ko'rsangiz — seminar aynan siz uchun.</p>
+    </div>
+    <div class="audience">
+      <div class="a-card"><div class="t">Tadbirkorlar</div></div>
+      <div class="a-card"><div class="t">TOP-menejerlar</div></div>
+      <div class="a-card"><div class="t">Bo'lim rahbarlari</div></div>
+      <div class="a-card"><div class="t">Marketologlar</div></div>
+      <div class="a-card"><div class="t">SMM mutaxassislar</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Seminardan keyin</span>
+      <h2>Biznesingizda nima o'zgaradi</h2>
+    </div>
+    <div class="transform">
+      <div class="t-card"><div class="n">01</div><h3>Operatsionkadan chiqasiz</h3><p>Takrorlanuvchi vazifalarni qo'lda emas, tizim orqali boshqarishni o'rganasiz.</p></div>
+      <div class="t-card"><div class="n">02</div><h3>24/7 AI-xodim</h3><p>Mijoz javobi, lid skrining, tahlil va hisobotni tunu-kun davom ettiradigan agent.</p></div>
+      <div class="t-card"><div class="n">03</div><h3>Bitta dashboard</h3><p>Barcha jarayonni bitta joydan kuzatib, natijani raqamda ko'rasiz.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="dastur">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Dastur</span>
+      <h2>4 soatlik amaliy yo'l xaritasi</h2>
+      <p>Har bosqich — nazariya emas, o'sha yerda qo'lda bajariladigan qadam.</p>
+    </div>
+    <div class="program">
+      <div class="p-row"><div class="p-num">14:00</div><div><h3>AI imkoniyatlar xaritasi</h3><p>Biznesingizdagi qaysi jarayonlar AI'ga topshirilishi mumkinligini aniqlaysiz.</p></div></div>
+      <div class="p-row"><div class="p-num">14:40</div><div><h3>Birinchi AI-agentni yaratish</h3><p>0 dan boshlab, sizning biznes holatingiz asosida ishlaydigan agent quriladi.</p></div></div>
+      <div class="p-row"><div class="p-num">15:30</div><div><h3>AI'ni biznesga "o'rgatish"</h3><p>Agent mahsulot, narx va jarayonlaringizni bilishi uchun bilim bazasi ulanadi.</p></div></div>
+      <div class="p-row"><div class="p-num">16:15</div><div><h3>Integratsiya va nazorat</h3><p>Tayyor agentni real kanalga (sayt, Telegram, CRM) ulash va natijani kuzatish.</p></div></div>
+      <div class="p-row"><div class="p-num">16:45</div><div><h3>Implementatsiya plani</h3><p>Seminardan keyingi 30 kunlik amaliy reja bilan ketasiz.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Nima bilan chiqasiz</span>
+      <h2>Seminar tugagach qo'lingizda bo'ladi</h2>
+    </div>
+    <div class="deliv">
+      <div class="d-item"><span class="check">✓</span><span class="txt">TOP AI promptlar to'plami</span></div>
+      <div class="d-item"><span class="check">✓</span><span class="txt">Tayyor agent va sotuv shablonlari</span></div>
+      <div class="d-item"><span class="check">✓</span><span class="txt">Bilim bazasi va lid kvalifikatsiya shablonlari</span></div>
+      <div class="d-item"><span class="check">✓</span><span class="txt">30 kunlik implementatsiya checklisti</span></div>
+      <div class="d-item"><span class="check">✓</span><span class="txt">Yopiq ishtirokchilar guruhi</span></div>
+      <div class="d-item"><span class="check">✓</span><span class="txt">Video darslar orqali qo'shimcha materiallar</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Savol-javob</span>
+      <h2>Ko'p so'raladigan savollar</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Men AI haqida hech narsa bilmayman, baribir foydali bo'ladimi? <span class="plus">+</span></summary>
+        <p>Ha. Dastur nol bazadan boshlanadi, texnik bilim shart emas — barcha qadamlar amaliy ko'rsatiladi.</p>
+      </details>
+      <details>
+        <summary>Dasturchi bo'lishim shartmi? <span class="plus">+</span></summary>
+        <p>Yo'q. Tayyor vositalar asosida ishlaysiz, kod yozish talab qilinmaydi.</p>
+      </details>
+      <details>
+        <summary>Noutbuk olib kelishim kerakmi? <span class="plus">+</span></summary>
+        <p>Ha, amaliy qismda o'z agentingizni tuzish uchun noutbuk kerak bo'ladi.</p>
+      </details>
+      <details>
+        <summary>AI xodimlarni almashtirib yuboradimi? <span class="plus">+</span></summary>
+        <p>Yo'q, AI takrorlanuvchi ishni oladi, xodim esa qaror va mijoz bilan chuqur ishlashga vaqt topadi.</p>
+      </details>
+      <details>
+        <summary>Materiallar seminardan keyin ham qoladimi? <span class="plus">+</span></summary>
+        <p>Ha, barcha shablon va promptlar sizda qoladi, istalgan vaqt qayta foydalanasiz.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="event">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Tafsilotlar</span>
+      <h2>Ishtirok etish shartlari</h2>
+    </div>
+    <div class="event-card">
+      <div class="e-cell"><div class="k">Sana</div><div class="v">24-sentabr, Payshanba</div></div>
+      <div class="e-cell"><div class="k">Vaqt</div><div class="v">14:00–17:00</div></div>
+      <div class="e-cell"><div class="k">Joy</div><div class="v">Medion</div></div>
+      <div class="e-cell"><div class="k">Format</div><div class="v">Offline, jonli</div></div>
+    </div>
+    <p class="fine">Narx va ro'yxatdan o'tish havolasi tasdiqlangach shu yerga qo'shiladi.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final">
+      <h2>Biznesingizni AI bilan qayta quring</h2>
+      <p>24-sentabr, Medion — 4 soat, o'zingizning birinchi AI-agentingiz bilan chiqasiz.</p>
+      <br>
+      <a class="cta" href="#event">Ariza qoldirish →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 AI Seminar. Barcha huquqlar himoyalangan.</p>
+    <p>Ushbu sahifa Facebook yoki Google bilan bog'liq emas.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  // countdown
+  var target = new Date("2026-09-24T14:00:00+05:00").getTime();
+  function tick(){
+    var now = new Date().getTime();
+    var diff = Math.max(0, target - now);
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    var pad = function(n){ return String(n).padStart(2,'0'); };
+    document.getElementById('cd-days').textContent = pad(d);
+    document.getElementById('cd-hours').textContent = pad(h);
+    document.getElementById('cd-mins').textContent = pad(m);
+    document.getElementById('cd-secs').textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // 3D neural-network hero visual
+  (function(){
+    var canvas = document.getElementById('net3d');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!window.THREE || !canvas) return;
+
+    var container = canvas.parentElement;
+    var renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 9);
+
+    var group = new THREE.Group();
+    scene.add(group);
+
+    var COUNT = 42;
+    var RADIUS = 3.1;
+    var pts = [];
+    for(var i=0;i<COUNT;i++){
+      var v = new THREE.Vector3(
+        (Math.random()-0.5)*2,
+        (Math.random()-0.5)*2,
+        (Math.random()-0.5)*2
+      ).normalize().multiplyScalar(RADIUS * (0.55 + Math.random()*0.45));
+      pts.push(v);
+    }
+
+    var dotGeo = new THREE.BufferGeometry().setFromPoints(pts);
+    var dotMat = new THREE.PointsMaterial({color: 0x8B5CF6, size: 0.07, transparent:true, opacity:0.9});
+    var dots = new THREE.Points(dotGeo, dotMat);
+    group.add(dots);
+
+    var linePositions = [];
+    var MAXDIST = 1.5;
+    for(var a=0;a<pts.length;a++){
+      for(var b=a+1;b<pts.length;b++){
+        if(pts[a].distanceTo(pts[b]) < MAXDIST){
+          linePositions.push(pts[a].x, pts[a].y, pts[a].z, pts[b].x, pts[b].y, pts[b].z);
+        }
+      }
+    }
+    var lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    var lineMat = new THREE.LineBasicMaterial({color: 0x22D3EE, transparent:true, opacity:0.18});
+    var lines = new THREE.LineSegments(lineGeo, lineMat);
+    group.add(lines);
+
+    function resize(){
+      var w = container.clientWidth, h = container.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var mx = 0, my = 0;
+    window.addEventListener('pointermove', function(e){
+      mx = (e.clientX / window.innerWidth - 0.5);
+      my = (e.clientY / window.innerHeight - 0.5);
+    });
+
+    var t = 0;
+    function animate(){
+      requestAnimationFrame(animate);
+      if(reduced){
+        group.rotation.y = 0.3;
+        renderer.render(scene, camera);
+        return;
+      }
+      t += 0.0035;
+      group.rotation.y = t + mx * 0.6;
+      group.rotation.x = Math.sin(t*0.6)*0.15 + my * 0.4;
+      renderer.render(scene, camera);
+    }
+    animate();
+  })();
+</script>
+
+</body>
+</html>
