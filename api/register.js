@@ -92,6 +92,6 @@ async function appendToGoogleSheet(name, phone) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, phone }),
-    redirect: 'follow',
+    redirect: 'manual',
   });
 }
