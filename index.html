@@ -91,14 +91,9 @@
   .cd-cell .lbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;}
 
   .hero-photo{
-    margin:44px auto 0;max-width:440px;position:relative;
+    margin:44px auto 0;max-width:440px;
   }
-  .hero-photo::before{
-    content:'';position:absolute;inset:-15% -30%;z-index:0;
-    background:radial-gradient(ellipse at center, rgba(203,255,77,0.16), transparent 70%);
-    filter:blur(30px);pointer-events:none;
-  }
-  .hero-photo img{position:relative;z-index:1;width:100%;height:auto;display:block;}
+  .hero-photo img{width:100%;height:auto;display:block;}
 
   .meta-strip{
     margin:44px auto 0;max-width:680px;
