@@ -175,6 +175,54 @@
   footer{border-top:1px solid var(--border);padding-block:32px;text-align:center;}
   footer p{color:var(--text-muted);font-size:12.5px;}
   footer p+p{margin-top:6px;}
+
+  /* register modal */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(5,5,8,0.75);backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+    opacity:0;pointer-events:none;transition:opacity 180ms cubic-bezier(.16,1,.3,1);
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto;}
+  .modal-card{
+    position:relative;overflow:hidden;
+    background:var(--surface);border:1px solid var(--border-2);border-radius:18px;
+    max-width:400px;width:100%;padding:30px 26px;
+    transform:translateY(8px) scale(0.98);
+    transition:transform 180ms cubic-bezier(.16,1,.3,1);
+  }
+  .modal-card::before{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(ellipse at 0% 0%, rgba(139,92,246,0.16), transparent 55%),
+               radial-gradient(ellipse at 100% 100%, rgba(251,65,65,0.14), transparent 55%);
+  }
+  .modal-overlay.open .modal-card{transform:translateY(0) scale(1);}
+  .modal-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .modal-head h3{font-family:'Space Grotesk';font-size:19px;font-weight:600;}
+  .modal-close{
+    background:none;border:none;color:var(--text-muted);font-size:22px;line-height:1;
+    cursor:pointer;padding:2px 6px;
+  }
+  .modal-close:hover{color:var(--text);}
+  .field{position:relative;z-index:1;margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;color:var(--text-muted);margin-bottom:6px;}
+  .field input{
+    width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;color:var(--text);font-family:'Inter',inherit;font-size:15px;
+  }
+  .field input:focus-visible{outline:2px solid var(--accent2);outline-offset:1px;}
+  .modal-submit{
+    position:relative;z-index:1;width:100%;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    color:#fff;font-weight:600;font-size:15px;
+    padding:14px;border-radius:10px;border:none;cursor:pointer;margin-top:6px;
+    transition:opacity 150ms;
+  }
+  .modal-submit:hover{opacity:.9;}
+  .modal-submit:disabled{opacity:.5;cursor:default;}
+  .modal-msg{position:relative;z-index:1;font-size:13px;margin-top:12px;text-align:center;}
+  .modal-msg.error{color:var(--danger);}
+  .modal-msg.success{color:var(--accent2);}
 </style>
 </head>
 <body>
@@ -182,7 +230,7 @@
 <nav>
   <div class="wrap">
     <div class="brand">AI Seminar</div>
-    <a class="nav-cta" href="#event">Yozilish</a>
+    <a class="nav-cta" href="#event" onclick="openRegister(event)">Yozilish</a>
   </div>
 </nav>
 
@@ -193,7 +241,7 @@
     <p class="lede">Sun'iy intellektning biznesingizga foydasi, uni integratsiya qilish va imkoniyatlaridan samarali foydalanishni bilib oling.</p>
 
     <div class="hero-actions">
-      <a class="cta" href="#event">Seminarga yozilish →</a>
+      <a class="cta" href="#event" onclick="openRegister(event)">Seminarga yozilish →</a>
       <a class="cta-ghost" href="#dastur">Dasturni ko'rish</a>
     </div>
 
@@ -342,7 +390,7 @@
       <h2>Biznesingizni AI bilan qayta quring</h2>
       <p>24-sentabr, Medion — 4 soat, o'zingizning birinchi AI-agentingiz bilan chiqasiz.</p>
       <br>
-      <a class="cta" href="#event">Ariza qoldirish →</a>
+      <a class="cta" href="#event" onclick="openRegister(event)">Ariza qoldirish →</a>
     </div>
   </div>
 </section>
@@ -353,6 +401,27 @@
     <p>Ushbu sahifa Facebook yoki Google bilan bog'liq emas.</p>
   </div>
 </footer>
+
+<div class="modal-overlay" id="register-overlay">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>Ro'yxatdan o'tish</h3>
+      <button class="modal-close" type="button" onclick="closeRegister()" aria-label="Yopish">&times;</button>
+    </div>
+    <form id="register-form">
+      <div class="field">
+        <label for="reg-name">Ismingiz</label>
+        <input type="text" id="reg-name" name="name" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="reg-phone">Telefon raqamingiz</label>
+        <input type="tel" id="reg-phone" name="phone" placeholder="+998901234567" required autocomplete="tel">
+      </div>
+      <button class="modal-submit" type="submit" id="reg-submit">Ro'yxatdan o'tish</button>
+      <div class="modal-msg" id="reg-msg"></div>
+    </form>
+  </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -373,6 +442,54 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  // register modal
+  var overlay = document.getElementById('register-overlay');
+  function openRegister(e){
+    if (e) e.preventDefault();
+    overlay.classList.add('open');
+    document.getElementById('reg-msg').textContent = '';
+  }
+  function closeRegister(){
+    overlay.classList.remove('open');
+  }
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeRegister();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeRegister();
+  });
+
+  document.getElementById('register-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = document.getElementById('reg-submit');
+    var msg = document.getElementById('reg-msg');
+    var name = document.getElementById('reg-name').value.trim();
+    var phone = document.getElementById('reg-phone').value.trim();
+    btn.disabled = true;
+    msg.className = 'modal-msg';
+    msg.textContent = '';
+    fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, phone: phone })
+    }).then(function(r){ return r.json(); }).then(function(data){
+      btn.disabled = false;
+      if (data.ok) {
+        msg.className = 'modal-msg success';
+        msg.textContent = "Rahmat! Ro'yxatdan o'tdingiz.";
+        document.getElementById('register-form').reset();
+        setTimeout(closeRegister, 1600);
+      } else {
+        msg.className = 'modal-msg error';
+        msg.textContent = "Ma'lumot yuborilmadi. Iltimos, qaytadan urinib ko'ring.";
+      }
+    }).catch(function(){
+      btn.disabled = false;
+      msg.className = 'modal-msg error';
+      msg.textContent = "Ma'lumot yuborilmadi. Iltimos, qaytadan urinib ko'ring.";
+    });
+  });
 
   // 3D neural-network hero visual
   (function(){
