@@ -22,7 +22,7 @@
     --text:#F5F5F7;
     --text-muted:#8B8B96;
     --accent1:#8B5CF6;
-    --accent2:#22D3EE;
+    --accent2:#FB4141;
     --on-accent:#07070A;
     --danger:#F87171;
   }
@@ -419,7 +419,7 @@
     }
     var lineGeo = new THREE.BufferGeometry();
     lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-    var lineMat = new THREE.LineBasicMaterial({color: 0x22D3EE, transparent:true, opacity:0.18});
+    var lineMat = new THREE.LineBasicMaterial({color: 0xFB4141, transparent:true, opacity:0.18});
     var lines = new THREE.LineSegments(lineGeo, lineMat);
     group.add(lines);
 
