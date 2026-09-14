@@ -207,6 +207,13 @@
     padding:12px 14px;color:var(--text);font-family:inherit;font-size:15px;
   }
   .field input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .phone-row{display:flex;align-items:stretch;gap:8px;}
+  .phone-prefix{
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
+    padding:0 12px;color:var(--text-muted);font-size:15px;font-weight:600;flex:none;
+  }
+  .phone-row input{flex:1;min-width:0;}
   .modal-submit{
     width:100%;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;
     padding:14px;border-radius:10px;border:none;cursor:pointer;margin-top:6px;
@@ -401,7 +408,10 @@
       </div>
       <div class="field">
         <label for="reg-phone">Telefon raqamingiz</label>
-        <input type="tel" id="reg-phone" name="phone" placeholder="+998901234567" required autocomplete="tel">
+        <div class="phone-row">
+          <span class="phone-prefix">+998</span>
+          <input type="tel" id="reg-phone" name="phone" placeholder="90 123 45 67" inputmode="numeric" maxlength="9" required autocomplete="tel-national">
+        </div>
       </div>
       <button class="modal-submit" type="submit" id="reg-submit">Ro'yxatdan o'tish</button>
       <div class="modal-msg" id="reg-msg"></div>
@@ -443,12 +453,17 @@
     if (e.key === 'Escape') closeRegister();
   });
 
+  var phoneInput = document.getElementById('reg-phone');
+  phoneInput.addEventListener('input', function(){
+    phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 9);
+  });
+
   document.getElementById('register-form').addEventListener('submit', function(e){
     e.preventDefault();
     var btn = document.getElementById('reg-submit');
     var msg = document.getElementById('reg-msg');
     var name = document.getElementById('reg-name').value.trim();
-    var phone = document.getElementById('reg-phone').value.trim();
+    var phone = '+998' + phoneInput.value.trim();
     btn.disabled = true;
     msg.className = 'modal-msg';
     msg.textContent = '';
