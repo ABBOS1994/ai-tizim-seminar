@@ -41,6 +41,7 @@ export default async function handler(req, res) {
   }
 
   await appendToSheet(cleanName, cleanPhone).catch(() => {});
+  await appendToGoogleSheet(cleanName, cleanPhone).catch(() => {});
 
   if (!telegramOk) {
     res.status(502).json({ ok: false, error: 'telegram_failed' });
@@ -82,4 +83,15 @@ async function appendToSheet(name, phone) {
   };
 
   await fetch(apiUrl, { method: 'PUT', headers, body: JSON.stringify(body) });
+}
+
+async function appendToGoogleSheet(name, phone) {
+  const url = process.env.GOOGLE_SCRIPT_URL;
+  if (!url) return;
+  await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, phone }),
+    redirect: 'follow',
+  });
 }
