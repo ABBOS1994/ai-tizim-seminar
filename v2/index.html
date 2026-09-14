@@ -484,21 +484,18 @@
     btn.disabled = true;
     msg.className = 'modal-msg';
     msg.textContent = '';
-    fetch('/api/register', {
+    var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtBqFkNVEFkoY9umT9gi4qBy2_1EiJnP3GoUKL3CruHEKgRVQV4Xuebo-Ygtd4cQdl/exec';
+    fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ name: name, phone: phone })
-    }).then(function(r){ return r.json(); }).then(function(data){
+    }).then(function(){
       btn.disabled = false;
-      if (data.ok) {
-        msg.className = 'modal-msg success';
-        msg.textContent = "Rahmat! Ro'yxatdan o'tdingiz.";
-        document.getElementById('register-form').reset();
-        setTimeout(closeRegister, 1600);
-      } else {
-        msg.className = 'modal-msg error';
-        msg.textContent = "Ma'lumot yuborilmadi. Iltimos, qaytadan urinib ko'ring.";
-      }
+      msg.className = 'modal-msg success';
+      msg.textContent = "Rahmat! Ro'yxatdan o'tdingiz.";
+      document.getElementById('register-form').reset();
+      setTimeout(closeRegister, 1600);
     }).catch(function(){
       btn.disabled = false;
       msg.className = 'modal-msg error';
