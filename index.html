@@ -175,6 +175,48 @@
   footer{border-top:1px solid var(--border);padding-block:28px;text-align:center;}
   footer p{color:var(--text-muted);font-size:12.5px;}
   footer p+p{margin-top:6px;}
+
+  /* register modal */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(5,6,4,0.72);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    opacity:0;pointer-events:none;
+    transition:opacity 180ms cubic-bezier(.16,1,.3,1);
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto;}
+  .modal-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    max-width:400px;width:100%;padding:28px 24px;
+    transform:translateY(8px) scale(0.98);
+    transition:transform 180ms cubic-bezier(.16,1,.3,1);
+  }
+  .modal-overlay.open .modal-card{transform:translateY(0) scale(1);}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .modal-head h3{font-size:19px;font-weight:800;}
+  .modal-close{
+    background:none;border:none;color:var(--text-muted);font-size:22px;line-height:1;
+    cursor:pointer;padding:2px 6px;
+  }
+  .modal-close:hover{color:var(--text);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;color:var(--text-muted);margin-bottom:6px;}
+  .field input{
+    width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;color:var(--text);font-family:inherit;font-size:15px;
+  }
+  .field input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  .modal-submit{
+    width:100%;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;
+    padding:14px;border-radius:10px;border:none;cursor:pointer;margin-top:6px;
+    transition:background 150ms;
+  }
+  .modal-submit:hover{background:var(--accent-hover);}
+  .modal-submit:disabled{opacity:.6;cursor:default;}
+  .modal-msg{font-size:13px;margin-top:12px;text-align:center;}
+  .modal-msg.error{color:var(--danger);}
+  .modal-msg.success{color:var(--accent);}
 </style>
 </head>
 <body>
@@ -182,7 +224,7 @@
 <nav>
   <div class="wrap">
     <div class="brand">AI Seminar</div>
-    <a class="nav-cta" href="#event">Yozilish</a>
+    <a class="nav-cta" href="#event" onclick="openRegister(event)">Yozilish</a>
   </div>
 </nav>
 
@@ -199,7 +241,7 @@
     <a class="handle" href="https://t.me/maxfiydasturchi" target="_blank" rel="noopener">@maxfiydasturchi</a>
   </div>
 
-  <a class="cta" href="#event">Seminarga yozilish →</a>
+  <a class="cta" href="#event" onclick="openRegister(event)">Seminarga yozilish →</a>
 
   <div class="countdown" id="countdown">
     <div class="cd-cell"><span class="num" id="cd-days">00</span><span class="lbl">kun</span></div>
@@ -334,7 +376,7 @@
       <h2>Biznesingizni AI bilan qayta quring</h2>
       <p>24-sentabr, Medion — 4 soat, o'zingizning birinchi AI-agentingiz bilan chiqasiz.</p>
       <br>
-      <a class="cta" href="#event">Ariza qoldirish →</a>
+      <a class="cta" href="#event" onclick="openRegister(event)">Ariza qoldirish →</a>
     </div>
   </div>
 </section>
@@ -345,6 +387,27 @@
     <p>Ushbu sahifa Facebook yoki Google bilan bog'liq emas.</p>
   </div>
 </footer>
+
+<div class="modal-overlay" id="register-overlay">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>Ro'yxatdan o'tish</h3>
+      <button class="modal-close" type="button" onclick="closeRegister()" aria-label="Yopish">&times;</button>
+    </div>
+    <form id="register-form">
+      <div class="field">
+        <label for="reg-name">Ismingiz</label>
+        <input type="text" id="reg-name" name="name" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="reg-phone">Telefon raqamingiz</label>
+        <input type="tel" id="reg-phone" name="phone" placeholder="+998901234567" required autocomplete="tel">
+      </div>
+      <button class="modal-submit" type="submit" id="reg-submit">Ro'yxatdan o'tish</button>
+      <div class="modal-msg" id="reg-msg"></div>
+    </form>
+  </div>
+</div>
 
 <script>
   var target = new Date("2026-09-24T14:00:00+05:00").getTime();
@@ -363,6 +426,53 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  var overlay = document.getElementById('register-overlay');
+  function openRegister(e){
+    if (e) e.preventDefault();
+    overlay.classList.add('open');
+    document.getElementById('reg-msg').textContent = '';
+  }
+  function closeRegister(){
+    overlay.classList.remove('open');
+  }
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeRegister();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeRegister();
+  });
+
+  document.getElementById('register-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = document.getElementById('reg-submit');
+    var msg = document.getElementById('reg-msg');
+    var name = document.getElementById('reg-name').value.trim();
+    var phone = document.getElementById('reg-phone').value.trim();
+    btn.disabled = true;
+    msg.className = 'modal-msg';
+    msg.textContent = '';
+    fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, phone: phone })
+    }).then(function(r){ return r.json(); }).then(function(data){
+      btn.disabled = false;
+      if (data.ok) {
+        msg.className = 'modal-msg success';
+        msg.textContent = "Rahmat! Ro'yxatdan o'tdingiz.";
+        document.getElementById('register-form').reset();
+        setTimeout(closeRegister, 1600);
+      } else {
+        msg.className = 'modal-msg error';
+        msg.textContent = "Ma'lumot yuborilmadi. Iltimos, qaytadan urinib ko'ring.";
+      }
+    }).catch(function(){
+      btn.disabled = false;
+      msg.className = 'modal-msg error';
+      msg.textContent = "Ma'lumot yuborilmadi. Iltimos, qaytadan urinib ko'ring.";
+    });
+  });
 </script>
 
 </body>
