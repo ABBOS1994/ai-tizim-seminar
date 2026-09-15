@@ -514,9 +514,10 @@ src="https://www.facebook.com/tr?id=1113488777696925&ev=PageView&noscript=1"
     }).then(function(){
       btn.disabled = false;
       msg.className = 'modal-msg success';
-      msg.innerHTML = "Rahmat! Ro'yxatdan o'tdingiz.<br><a class=\"tg-join-btn\" href=\"https://t.me/maxfiydasturchiiiii\" target=\"_blank\" rel=\"noopener\">Telegram kanalga qo'shilish →</a>";
+      msg.innerHTML = "Rahmat! Ro'yxatdan o'tdingiz. Telegram kanalga o'tkazilyapsiz...";
       if (typeof fbq === 'function') fbq('track', 'Lead');
       document.getElementById('register-form').reset();
+      setTimeout(function(){ window.location.href = 'https://t.me/maxfiydasturchiiiii'; }, 900);
     }).catch(function(){
       btn.disabled = false;
       msg.className = 'modal-msg error';
