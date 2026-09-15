@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "seminar2.vox-digital.uz" }],
+      "destination": "/v2/:path*"
+    }
+  ]
+}
