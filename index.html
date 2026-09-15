@@ -225,6 +225,8 @@
   .modal-msg{font-size:13px;margin-top:12px;text-align:center;}
   .modal-msg.error{color:var(--danger);}
   .modal-msg.success{color:var(--accent);}
+  .tg-join-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:12px 18px;background:var(--accent);color:#111;font-weight:700;font-size:14.5px;border-radius:10px;text-decoration:none;transition:filter .15s;}
+  .tg-join-btn:hover{filter:brightness(1.08);}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -495,10 +497,9 @@ src="https://www.facebook.com/tr?id=1113488777696925&ev=PageView&noscript=1"
     }).then(function(){
       btn.disabled = false;
       msg.className = 'modal-msg success';
-      msg.textContent = "Rahmat! Ro'yxatdan o'tdingiz.";
+      msg.innerHTML = "Rahmat! Ro'yxatdan o'tdingiz.<br><a class=\"tg-join-btn\" href=\"https://t.me/maxfiydasturchiiiii\" target=\"_blank\" rel=\"noopener\">Telegram kanalga qo'shilish →</a>";
       if (typeof fbq === 'function') fbq('track', 'Lead');
       document.getElementById('register-form').reset();
-      setTimeout(closeRegister, 1600);
     }).catch(function(){
       btn.disabled = false;
       msg.className = 'modal-msg error';
