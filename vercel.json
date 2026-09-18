@@ -1,6 +1,12 @@
 {
   "redirects": [
     {
+      "source": "/",
+      "has": [{ "type": "host", "value": "ai-tizim-seminar.vercel.app" }],
+      "destination": "https://seminar.vox-digital.uz/",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "ai-tizim-seminar.vercel.app" }],
       "destination": "https://seminar.vox-digital.uz/:path*",
