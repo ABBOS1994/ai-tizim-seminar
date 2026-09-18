@@ -1,0 +1,19 @@
+vercel.json
+  s_231c118a39f9cc::t_7d7f708e36ba9e 2-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "71ec87bd79a14d32871e3d082e42a37395578ed7",
+  "prompts": {},
+  "sessions": {
+    "s_231c118a39f9cc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7fa316c7-32e6-4e3d-9c3d-c271f3b956b6",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Abbos <iskandarov.foto@gmail.com>"
+    }
+  }
+}
